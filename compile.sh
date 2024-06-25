@@ -2,17 +2,18 @@
 set -e
 
 # THIS DIR
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "THIS_DIR: $THIS_DIR"
 # deployment dir
-DEPLOYMENT=$DIR/deploy_dedicated
+DEPLOYMENT=$THIS_DIR/deploy_dedicated
 mkdir -p $DEPLOYMENT
 
 # WASM PREFIX
-PREFIX=$DIR/wasm
+PREFIX=$THIS_DIR/wasm
 
+# create the env
 # set to false to skip environment creation
-if true; then
+if false; then
     $MAMBA_EXE create -p $PREFIX  \
     --platform=emscripten-wasm32 \
     -c https://repo.mamba.pm/emscripten-forge \
@@ -45,3 +46,19 @@ if true; then
 
     emmake make -j8
 fi
+
+echo "Copying files to deployment dir from $THIS_DIR/dedicated/build"
+
+# copy the just built files to the deployment dir
+cp $THIS_DIR/dedicated/build/compile_string.js $DEPLOYMENT
+cp $THIS_DIR/dedicated/build/compile_string.wasm $DEPLOYMENT
+  
+# copy the clang resources to the deployment dir
+mkdir -p $DEPLOYMENT/clang_resources
+echo "copy clang resources from $PREFIX/lib/clang/17 to $DEPLOYMENT/clang_resources"
+cp -r $PREFIX/lib/clang/17  $DEPLOYMENT/clang_resources
+
+
+
+# python script to create a json with all files
+python $THIS_DIR/make_list.py

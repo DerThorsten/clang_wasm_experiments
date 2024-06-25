@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Deploy</title>
+    <script>
+
+        // helper
+        function getJson(url) {
+          const json_url = url;
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', json_url, false);
+          xhr.send(null);
+          return JSON.parse(xhr.responseText);
+        }
+
+        // Get the list of files
+        const files = getJson('./clang_resource_files.json');
+
+
+        // Define the Module
+        var Module = {
+            preRun:function() {
+
+              FS.mkdirTree('/lib/clang/17');
+              // iterate over the files
+              for (let i = 0; i < files.length; i++) {
+                  const file = files[i];
+                  console.log(file);
+
+                  //const clang_resources_root = '/'; 
+                  const clang_resources_path = '/lib/clang/';
+
+
+                  const path_in_virtual_fs = `${clang_resources_root}${file}`;
+                  // get the dirname
+                  const dirname = path_in_virtual_fs.split('/').slice(0, -1).join('/');
+                  console.log(dirname);
+                  FS.mkdirTree(dirname);
+
+
+                  FS.createPreloadedFile('/', path_in_virtual_fs, `./clang_resources/${file}`, true, true);
+    
+              }
+
+
+            },
+            onRuntimeInitialized: function() {
+                console.log('Runtime initialized.');
+            }
+
+        };
+    </script>
+    <script src="compile_string.js"></script>
+  </head>
+  <body>
+    <h1>Deploy</h1>
+  </body>
+</html>
