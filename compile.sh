@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+# get first argument
+EMSDK_DIR=$1
+
+# check if the argument is empty
+if [ -z "$EMSDK_DIR" ]; then
+    echo "Usage: $0 <path to emsdk directory>"
+    exit 1
+fi
+
 # THIS DIR
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "THIS_DIR: $THIS_DIR"
@@ -22,7 +31,6 @@ if false; then
 fi
 
 
-EMSDK_DIR=$HOME/src/pyjs/emsdk_install
 source $EMSDK_DIR/emsdk_env.sh
 
 cd dedicated
