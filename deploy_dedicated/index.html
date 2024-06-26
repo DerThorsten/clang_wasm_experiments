@@ -20,6 +20,10 @@
         // Define the Module
         var Module = {
             preRun:function() {
+              
+              console.log("Setting up the clang resources");
+              ENV["LIBCLANG_RESOURCE_PATH"] = '/lib/clang/17';
+
 
               FS.mkdirTree('/lib/clang/17');
               // iterate over the files
@@ -28,7 +32,7 @@
                   console.log(file);
 
                   //const clang_resources_root = '/'; 
-                  const clang_resources_path = '/lib/clang/';
+                  const clang_resources_root = '/lib/clang/';
 
 
                   const path_in_virtual_fs = `${clang_resources_root}${file}`;
