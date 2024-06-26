@@ -1,4 +1,6 @@
 #include <clang-c/Index.h>
+
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,7 +17,12 @@ void printDiagnostics(CXTranslationUnit translationUnit) {
     }
 }
 
+
+
+
 int main() {
+
+
     // Sample C++ code
     std::string code = R"(
         #include <iostream>

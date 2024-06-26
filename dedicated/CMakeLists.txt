@@ -72,4 +72,8 @@ target_link_libraries(compile_string ${llvm_libs} ${CLANG_LIBRARY}
 
 # add linker options -s ERROR_ON_UNDEFINED_SYMBOLS=0
 
-target_link_options(compile_string PRIVATE -s ERROR_ON_UNDEFINED_SYMBOLS=0)
+target_link_options(compile_string PRIVATE -s ERROR_ON_UNDEFINED_SYMBOLS=0  -sASSERTIONS)
+target_compile_options(compile_string PRIVATE -s ERROR_ON_UNDEFINED_SYMBOLS=0  -sASSERTIONS)
+
+# ensure debug mode
+set(CMAKE_BUILD_TYPE Debug)

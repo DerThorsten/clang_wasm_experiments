@@ -47,8 +47,7 @@ if true; then
     emcmake cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ON \
-    -DBUILD_RUNTIME_BROWSER=ON \
-    -DBUILD_RUNTIME_NODE=OFF \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     ..
 
