@@ -4,6 +4,8 @@
     <title>Deploy</title>
     <script>
 
+        var all_files = null;
+
         // helper
         function getJson(url) {
           const json_url = url;
@@ -14,35 +16,31 @@
         }
 
         // Get the list of files
-        const files = getJson('./clang_resource_files.json');
+        all_files = getJson('./clang_resource_files.json');
 
+        // // predefined ENV?
+        // var ENV = {};
+        // ENV["LIBCLANG_RESOURCE_PATH"] = '/lib/clang/17';
 
         // Define the Module
         var Module = {
             preRun:function() {
               
-              console.log("Setting up the clang resources");
+              console.log("Setting up the clang resources",ENV);  
               ENV["LIBCLANG_RESOURCE_PATH"] = '/lib/clang/17';
 
 
               FS.mkdirTree('/lib/clang/17');
               // iterate over the files
-              for (let i = 0; i < files.length; i++) {
-                  const file = files[i];
-                  console.log(file);
-
-                  //const clang_resources_root = '/'; 
+              for (let i = 0; i < all_files.length; i++) {
+                  const file = all_files[i];
                   const clang_resources_root = '/lib/clang/';
-
-
                   const path_in_virtual_fs = `${clang_resources_root}${file}`;
-                  // get the dirname
                   const dirname = path_in_virtual_fs.split('/').slice(0, -1).join('/');
-                  console.log(dirname);
+                  const filename = path_in_virtual_fs.split('/').slice(-1)[0];
                   FS.mkdirTree(dirname);
-
-
-                  FS.createPreloadedFile('/', path_in_virtual_fs, `./clang_resources/${file}`, true, true);
+                  FS.createPreloadedFile(dirname, filename, `./clang_resources/${file}`, true, true);
+                  console.log(`Created file ${filename} in ${dirname}`);
     
               }
 
@@ -50,6 +48,20 @@
             },
             onRuntimeInitialized: function() {
                 console.log('Runtime initialized.');
+
+                // just to make sure the files are there
+                
+                // for (let i = 0; i < 10; i++) {
+                //   const file = all_files[i];
+                //   const clang_resources_root = '/lib/clang/';
+                //   const path_in_virtual_fs = `${clang_resources_root}${file}`;
+                //   const dirname = path_in_virtual_fs.split('/').slice(0, -1).join('/');
+                //   const filename = path_in_virtual_fs.split('/').slice(-1)[0];
+                //   // read the file
+                //   const content = FS.readFile(path_in_virtual_fs, { encoding: 'utf8' });
+                //   //console.log(`Read file ${filename} in ${dirname} with content: ${content}`);
+                // }
+
             }
 
         };
