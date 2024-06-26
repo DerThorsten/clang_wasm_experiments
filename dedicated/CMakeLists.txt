@@ -8,6 +8,7 @@ find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
 
+find_library(CLANG_LIBRARY clang)
 
 
 # Include LLVM headers

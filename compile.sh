@@ -48,6 +48,7 @@ if true; then
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ON \
     -DCMAKE_BUILD_TYPE=Debug \
+    -DCLANG_LIBRARY=$PREFIX/lib/libclang.a \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     ..
 
